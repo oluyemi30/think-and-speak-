@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #0c0f12;
+    color: #f4f4f5;
+  }
+
+  .font-serif-display {
+    font-family: 'Instrument Serif', Georgia, serif;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(24, 24, 27, 0.3);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(217, 119, 87, 0.4);
+    border-radius: 4px;
+  }
+
+  /* Atmospheric Radial Ambient Glow matching unprompted.cool */
+  .unprompted-bg {
+    background-color: #0c0f12;
+    background-image: 
+      radial-gradient(circle at 50% 20%, rgba(35, 65, 60, 0.25) 0%, transparent 60%),
+      radial-gradient(circle at 20% 80%, rgba(217, 119, 87, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(20, 35, 45, 0.4) 0%, transparent 50%);
+  }
+
+  .glass-card {
+    background: rgba(20, 24, 28, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-card-hover {
+    transition: all 0.2s ease;
+  }
+  .glass-card-hover:hover {
+    background: rgba(28, 33, 38, 0.85);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-terracotta {
+    background-color: #d97757;
+    color: #0c0f12;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+  .btn-terracotta:hover {
+    background-color: #e28566;
+    box-shadow: 0 0 20px rgba(217, 119, 87, 0.35);
+  }
+
+  .btn-dark-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e4e4e7;
+    transition: all 0.2s ease;
+  }
+  .btn-dark-pill:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+}
+
+/* Custom range slider styling */
+input[type=range] {
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  height: 6px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #d97757;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(217, 119, 87, 0.5);
+  transition: transform 0.1s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

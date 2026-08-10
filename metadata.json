@@ -1,0 +1,6 @@
+{
+  "name": "THINK & SPEAK",
+  "description": "A practice gym for your brain and voice. Think faster, speak better, and generate content ideas in your niche.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
