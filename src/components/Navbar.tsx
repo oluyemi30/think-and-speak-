@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flame, Lightbulb, Users, BarChart3, Sparkles } from 'lucide-react';
+import { SocialLinks } from './SocialLinks';
 
 interface NavbarProps {
   activeTab: 'practice' | 'content' | 'group' | 'progress';
@@ -75,10 +76,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, streakD
           </button>
         </nav>
 
-        {/* Streak Counter Badge */}
-        <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-semibold shrink-0">
-          <Flame className="w-3.5 h-3.5 text-[#f59e0b] fill-[#f59e0b]" />
-          <span className="text-[10px] sm:text-[11px] font-bold">{streakDays}d</span>
+        {/* Right Section: Social Links + Streak Counter Badge */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="hidden sm:block">
+            <SocialLinks variant="compact" />
+          </div>
+
+          <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-semibold">
+            <Flame className="w-3.5 h-3.5 text-[#f59e0b] fill-[#f59e0b]" />
+            <span className="text-[10px] sm:text-[11px] font-bold">{streakDays}d</span>
+          </div>
         </div>
       </div>
     </header>

@@ -4,6 +4,7 @@ import { PracticePage } from './pages/PracticePage';
 import { ContentCreatorPage } from './pages/ContentCreatorPage';
 import { GroupModePage } from './pages/GroupModePage';
 import { ProgressPage } from './pages/ProgressPage';
+import { SocialLinks } from './components/SocialLinks';
 import { storageService } from './services/storageService';
 import { TopicPrompt } from './types';
 
@@ -50,13 +51,17 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.04] py-6 px-4 text-center text-xs text-zinc-600 space-y-1">
-        <p className="font-serif-display text-base text-zinc-300">
-          Off The Cuff
-        </p>
-        <p className="text-[11px] text-zinc-500">
-          Think quick on your feet. Master spontaneous speaking.
-        </p>
+      <footer className="border-t border-white/[0.06] py-8 px-4 text-center space-y-4 bg-[#080c14]/40">
+        <div className="space-y-1">
+          <p className="font-serif-display text-lg text-zinc-200">
+            Off The Cuff
+          </p>
+          <p className="text-[11px] text-zinc-400">
+            Think quick on your feet. Master spontaneous speaking.
+          </p>
+        </div>
+
+        <SocialLinks variant="footer" />
       </footer>
     </div>
   );
