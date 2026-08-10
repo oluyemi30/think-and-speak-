@@ -23,7 +23,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen unprompted-bg text-zinc-100 flex flex-col font-sans selection:bg-[#d97757] selection:text-[#0c0f12] antialiased">
+    <div className="min-h-screen offthecuff-bg text-zinc-100 flex flex-col font-sans selection:bg-[#f59e0b] selection:text-[#080c14] antialiased">
       {/* Top Navbar */}
       <Navbar
         activeTab={activeTab}
@@ -51,11 +51,11 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-white/[0.04] py-6 px-4 text-center text-xs text-zinc-600 space-y-1">
-        <p className="font-serif-display text-base text-zinc-400">
-          Unprompted
+        <p className="font-serif-display text-base text-zinc-300">
+          Off The Cuff
         </p>
         <p className="text-[11px] text-zinc-500">
-          Think quick on your feet. Practice spontaneous speaking.
+          Think quick on your feet. Master spontaneous speaking.
         </p>
       </footer>
     </div>

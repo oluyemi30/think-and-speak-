@@ -83,7 +83,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 bg-[#d97757]/20 border border-[#d97757]/30 text-[#d97757] rounded-2xl flex items-center justify-center mx-auto mb-3">
+          <div className="w-12 h-12 bg-[#f59e0b]/20 border border-[#f59e0b]/30 text-[#f59e0b] rounded-2xl flex items-center justify-center mx-auto mb-3">
             <Trophy className="w-6 h-6" />
           </div>
           <h2 className="font-serif-display text-3xl sm:text-4xl text-zinc-100">
@@ -97,7 +97,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
         {/* Summary Card */}
         <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 mb-6 space-y-2">
           <div className="flex items-center justify-between text-xs text-zinc-400 font-medium">
-            <span className="text-[#d97757] font-bold">{prompt.category}</span>
+            <span className="text-[#f59e0b] font-bold">{prompt.category}</span>
             <span>{prompt.difficulty} Mode</span>
           </div>
           <p className="font-serif-display text-lg text-zinc-100">&ldquo;{prompt.topic}&rdquo;</p>
@@ -106,7 +106,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
           <div className="flex items-center gap-6 text-xs font-medium pt-3 border-t border-white/10">
             <div>
               <span className="text-zinc-500 block text-[10px] uppercase tracking-wider">Think Time</span>
-              <span className="text-[#d97757] font-bold">{formatSeconds(prompt.thinkTimeSeconds)}</span>
+              <span className="text-[#f59e0b] font-bold">{formatSeconds(prompt.thinkTimeSeconds)}</span>
             </div>
             <div>
               <span className="text-zinc-500 block text-[10px] uppercase tracking-wider">Speak Time</span>
@@ -119,7 +119,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
         {audioRecordingUrl && (
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 mb-6">
             <div className="flex items-center gap-2 text-xs font-bold text-zinc-300 mb-2">
-              <Volume2 className="w-4 h-4 text-[#d97757]" />
+              <Volume2 className="w-4 h-4 text-[#f59e0b]" />
               <span>Your Recorded Speech</span>
             </div>
             <audio controls src={audioRecordingUrl} className="w-full h-8" />
@@ -143,7 +143,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
                     onClick={() => toggleSkill(skill)}
                     className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#d97757] text-[#0c0f12] font-bold shadow-sm'
+                        ? 'bg-[#f59e0b] text-[#080c14] font-bold shadow-sm'
                         : 'bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10'
                     }`}
                   >
@@ -167,7 +167,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
                   onClick={() => setConfidence(val)}
                   className={`w-10 h-10 rounded-xl font-bold text-sm flex items-center justify-center transition-all cursor-pointer ${
                     confidence === val
-                      ? 'bg-[#d97757] text-[#0c0f12] shadow-md'
+                      ? 'bg-[#f59e0b] text-[#080c14] shadow-md'
                       : 'bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10'
                   }`}
                 >
@@ -252,7 +252,7 @@ export const SessionResultModal: React.FC<SessionResultModalProps> = ({
             <button
               type="button"
               onClick={handleSave}
-              className="w-full sm:flex-1 py-3 btn-terracotta rounded-full font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md"
+              className="w-full sm:flex-1 py-3 btn-amber rounded-full font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md"
             >
               Save Record
             </button>

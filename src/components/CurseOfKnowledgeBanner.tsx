@@ -10,11 +10,11 @@ export const CurseOfKnowledgeBanner: React.FC = () => {
     <div className="relative glass-card p-4 sm:p-5 rounded-2xl border border-white/10 mb-6 transition-all">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
-          <div className="p-2 rounded-xl bg-[#d97757]/15 border border-[#d97757]/30 text-[#d97757] shrink-0">
+          <div className="p-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-[#f59e0b] shrink-0">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#d97757] mb-0.5">
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#f59e0b] mb-0.5">
               Break the Curse of Knowledge
             </h3>
             <p className="text-sm text-zinc-200 font-serif-display italic leading-snug">

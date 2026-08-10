@@ -1,6 +1,6 @@
 {
-  "name": "THINK & SPEAK",
-  "description": "A practice gym for your brain and voice. Think faster, speak better, and generate content ideas in your niche.",
+  "name": "Off The Cuff",
+  "description": "Spontaneous speaking gym. Think fast, speak clearly, and articulate your thoughts on demand.",
   "requestFramePermissions": ["microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

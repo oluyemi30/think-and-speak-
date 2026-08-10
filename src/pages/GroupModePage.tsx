@@ -80,36 +80,36 @@ export const GroupModePage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-8 animate-fadeIn">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-black bg-[#FF4F00] text-white text-[10px] font-black uppercase tracking-[0.2em]">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-[#f59e0b] text-xs font-bold uppercase tracking-wider">
           <Users className="w-3.5 h-3.5" /> GROUP PRACTICE ROOM
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tighter leading-tight">
-          SPEAK WITH FRIENDS &amp; PEERS
+        <h1 className="text-3xl sm:text-5xl font-serif-display font-bold text-zinc-100 leading-tight">
+          Speak with Friends &amp; Peers
         </h1>
 
-        <p className="text-xs sm:text-sm text-gray-700 max-w-xl mx-auto font-bold uppercase tracking-wider leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto font-medium leading-relaxed">
           Spin a random topic for everyone in the room. Each person gets 60 seconds. Vote on the most compelling argument, best delivery, or funniest answer!
         </p>
       </div>
 
       {/* Lobby Room Card */}
       {room.status === 'lobby' && (
-        <div className="bg-white border-2 border-black p-6 sm:p-8 space-y-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b-2 border-gray-200">
+        <div className="glass-card border border-white/10 p-6 sm:p-8 rounded-3xl space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
             <div>
-              <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">ROOM CODE</span>
-              <div className="text-3xl font-black text-[#FF4F00] font-mono tracking-widest">{room.code}</div>
+              <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">ROOM CODE</span>
+              <div className="text-3xl font-black text-[#f59e0b] font-mono tracking-widest">{room.code}</div>
             </div>
 
-            <span className="px-3 py-1 border-2 border-black bg-black text-white text-[10px] font-black uppercase tracking-widest">
+            <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
               ● ROOM ACTIVE
             </span>
           </div>
 
           {/* Players List */}
           <div>
-            <h3 className="text-[10px] font-black text-[#FF4F00] uppercase tracking-[0.2em] mb-3">
+            <h3 className="text-xs font-bold text-[#f59e0b] uppercase tracking-wider mb-3">
               PLAYERS IN ROOM ({room.players.length})
             </h3>
 
@@ -117,14 +117,14 @@ export const GroupModePage: React.FC = () => {
               {room.players.map((p) => (
                 <div
                   key={p.id}
-                  className="bg-gray-100 border-2 border-black p-3 text-center space-y-1 relative"
+                  className="bg-white/[0.03] border border-white/10 rounded-2xl p-3 text-center space-y-1 relative"
                 >
-                  <div className="w-10 h-10 bg-black text-white font-black flex items-center justify-center mx-auto text-sm border-2 border-black">
+                  <div className="w-10 h-10 bg-white/10 text-zinc-100 font-bold rounded-xl flex items-center justify-center mx-auto text-sm border border-white/10">
                     {p.name.charAt(0)}
                   </div>
-                  <span className="block text-xs font-black text-black truncate uppercase">{p.name}</span>
+                  <span className="block text-xs font-semibold text-zinc-200 truncate">{p.name}</span>
                   {p.isHost && (
-                    <span className="inline-block text-[9px] bg-[#FF4F00] text-white px-2 py-0.5 font-black uppercase tracking-wider border border-black">
+                    <span className="inline-block text-[9px] bg-[#f59e0b] text-[#080c14] px-2 py-0.5 font-bold rounded-full uppercase tracking-wider">
                       HOST
                     </span>
                   )}
@@ -140,11 +140,11 @@ export const GroupModePage: React.FC = () => {
               value={newPlayerName}
               onChange={(e) => setNewPlayerName(e.target.value)}
               placeholder="Add player name..."
-              className="flex-1 bg-white border-2 border-black p-3 text-xs font-bold text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF4F00]"
+              className="flex-1 bg-white/[0.05] border border-white/10 rounded-2xl p-3 text-xs font-medium text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#f59e0b]"
             />
             <button
               type="submit"
-              className="px-5 py-3 border-2 border-black bg-black text-white hover:bg-[#FF4F00] text-xs font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+              className="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-zinc-200 text-xs font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
             >
               <Plus className="w-3.5 h-3.5" /> ADD
             </button>
@@ -156,7 +156,7 @@ export const GroupModePage: React.FC = () => {
               type="button"
               onClick={handleSpinForEveryone}
               disabled={isSpinning}
-              className="w-full sm:w-auto px-8 py-5 bg-[#FF4F00] hover:bg-[#E04500] text-white font-black text-base uppercase tracking-wider border-2 border-black flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+              className="w-full sm:w-auto px-8 py-4 btn-amber text-sm font-bold uppercase tracking-wider rounded-full flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-lg transition-all"
             >
               <Dices className="w-5 h-5" />
               <span>SPIN FOR EVERYONE 🎲</span>
@@ -167,24 +167,24 @@ export const GroupModePage: React.FC = () => {
 
       {/* Active Speaking Phase */}
       {room.status === 'speaking' && room.topic && (
-        <div className="bg-white border-2 border-black p-6 sm:p-8 space-y-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
-          <div className="px-4 py-1 bg-[#FF4F00] text-white text-[10px] font-black inline-block uppercase tracking-[0.2em] border-2 border-black">
+        <div className="glass-card border border-white/10 p-6 sm:p-8 rounded-3xl space-y-6 text-center">
+          <div className="px-4 py-1.5 rounded-full bg-[#f59e0b] text-[#080c14] text-xs font-bold inline-block uppercase tracking-wider shadow-md animate-pulse">
             🎙️ GROUP SPEAKING PHASE — 60 SECONDS
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-3xl font-black text-black italic uppercase">&ldquo;{room.topic.topic}&rdquo;</h2>
-            <p className="text-sm text-gray-700 font-extrabold">{room.topic.challenge}</p>
+            <h2 className="text-3xl font-serif-display font-bold text-zinc-100">&ldquo;{room.topic.topic}&rdquo;</h2>
+            <p className="text-sm text-zinc-300 font-medium">{room.topic.challenge}</p>
           </div>
 
-          <div className="text-7xl font-black font-mono text-black my-4">
+          <div className="text-7xl font-mono font-bold text-zinc-100 my-4">
             00:{secondsLeft.toString().padStart(2, '0')}
           </div>
 
           <button
             type="button"
             onClick={handleFinishSpeaking}
-            className="px-6 py-3 border-2 border-black bg-black text-white hover:bg-[#FF4F00] font-black text-xs uppercase tracking-wider cursor-pointer transition-colors"
+            className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 text-zinc-100 font-bold text-xs uppercase tracking-wider cursor-pointer transition-colors"
           >
             Everyone Finished Speaking → Proceed to Vote
           </button>
@@ -193,11 +193,11 @@ export const GroupModePage: React.FC = () => {
 
       {/* Voting Phase */}
       {room.status === 'voting' && (
-        <div className="bg-white border-2 border-black p-6 sm:p-8 space-y-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+        <div className="glass-card border border-white/10 p-6 sm:p-8 rounded-3xl space-y-6">
           <div className="text-center space-y-1">
-            <Award className="w-8 h-8 text-[#FF4F00] mx-auto" />
-            <h2 className="text-2xl font-black text-black uppercase tracking-tight">Cast Your Peer Votes</h2>
-            <p className="text-xs text-gray-600 font-bold uppercase tracking-wider">
+            <Award className="w-8 h-8 text-[#f59e0b] mx-auto" />
+            <h2 className="text-2xl font-serif-display font-bold text-zinc-100">Cast Your Peer Votes</h2>
+            <p className="text-xs text-zinc-400 font-medium">
               Celebrate your friends! Vote on who presented the best argument, delivery, or answer.
             </p>
           </div>
@@ -209,8 +209,8 @@ export const GroupModePage: React.FC = () => {
               { id: 'mostCreative', title: 'Most Creative 🎨' },
               { id: 'funniest', title: 'Funniest Answer 😂' },
             ].map((cat) => (
-              <div key={cat.id} className="bg-gray-100 border-2 border-black p-4 space-y-2">
-                <span className="text-[10px] font-black text-[#FF4F00] uppercase tracking-[0.2em]">{cat.title}</span>
+              <div key={cat.id} className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-2">
+                <span className="text-xs font-bold text-[#f59e0b] uppercase tracking-wider">{cat.title}</span>
                 <div className="flex flex-wrap gap-2">
                   {room.players.map((p) => {
                     const isVoted = activeVotes[cat.id] === p.id;
@@ -219,10 +219,10 @@ export const GroupModePage: React.FC = () => {
                         key={p.id}
                         type="button"
                         onClick={() => handleVote(cat.id, p.id)}
-                        className={`px-3 py-1.5 text-xs font-black uppercase cursor-pointer border-2 transition-all ${
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-full cursor-pointer transition-all ${
                           isVoted
-                            ? 'border-black bg-black text-white'
-                            : 'border-gray-300 bg-white text-black hover:border-black'
+                            ? 'bg-[#f59e0b] text-[#080c14] font-bold shadow-sm'
+                            : 'bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10'
                         }`}
                       >
                         {isVoted ? '✓ ' : ''} {p.name}
@@ -238,7 +238,7 @@ export const GroupModePage: React.FC = () => {
             <button
               type="button"
               onClick={() => setRoom((prev) => ({ ...prev, status: 'lobby' }))}
-              className="px-6 py-3 border-2 border-black bg-black text-white hover:bg-gray-800 font-black text-xs uppercase tracking-wider cursor-pointer"
+              className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 text-zinc-200 font-bold text-xs uppercase tracking-wider cursor-pointer transition-colors"
             >
               Back to Group Lobby
             </button>

@@ -49,23 +49,23 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
     <div className="max-w-4xl mx-auto space-y-8 animate-fadeIn">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-black bg-[#FF4F00] text-white text-[10px] font-black uppercase tracking-[0.2em]">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-[#f59e0b] text-xs font-bold uppercase tracking-wider">
           <Lightbulb className="w-3.5 h-3.5" /> CONTENT CREATOR ENGINE
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tighter leading-tight">
-          &ldquo;I KNOW MY NICHE. I JUST DON&apos;T KNOW WHAT TO TALK ABOUT.&rdquo;
+        <h1 className="text-3xl sm:text-5xl font-serif-display font-bold text-zinc-100 leading-tight">
+          &ldquo;I know my niche. I just don&apos;t know what to talk about.&rdquo;
         </h1>
 
-        <p className="text-xs sm:text-sm text-gray-700 max-w-xl mx-auto font-bold uppercase tracking-wider leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto font-medium leading-relaxed">
           Break the curse of knowledge. Stop waiting for inspiration — turn what you already know into high-converting video and podcast concepts.
         </p>
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleGenerate} className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
-        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#FF4F00]">
-          ENTER YOUR NICHE OR TOPIC AREA:
+      <form onSubmit={handleGenerate} className="glass-card border border-white/10 p-6 rounded-3xl space-y-4">
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#f59e0b]">
+          Enter your niche or topic area:
         </label>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -74,14 +74,14 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
             value={niche}
             onChange={(e) => setNiche(e.target.value)}
             placeholder="e.g. Web Development, Fitness, Real Estate, SaaS, AI Tools..."
-            className="flex-1 bg-white border-2 border-black p-3 text-xs font-bold text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF4F00]"
+            className="flex-1 bg-white/[0.05] border border-white/10 rounded-2xl p-3 text-xs font-medium text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#f59e0b]"
             required
           />
 
           <button
             type="submit"
             disabled={isLoading}
-            className="px-6 py-3 bg-[#FF4F00] hover:bg-[#E04500] text-white font-black text-xs uppercase tracking-wider transition-all cursor-pointer border-2 border-black flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
+            className="px-6 py-3 btn-amber text-xs font-bold uppercase tracking-wider rounded-full transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
           >
             {isLoading ? (
               <>
@@ -98,8 +98,8 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
         </div>
 
         {/* Preset tags */}
-        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600">
-          <span className="font-black uppercase tracking-wider text-[10px]">Try popular niches:</span>
+        <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-400 pt-2">
+          <span className="font-bold uppercase tracking-wider text-[10px]">Try popular niches:</span>
           {['Web development', 'Fitness & Health', 'Personal Finance', 'Solana', 'AI Tools', 'SaaS Growth'].map((tag) => (
             <button
               key={tag}
@@ -108,7 +108,7 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
                 setNiche(tag);
                 handleGenerate();
               }}
-              className="px-2.5 py-1 bg-gray-100 hover:bg-black hover:text-white text-black text-[10px] font-black uppercase tracking-wider border-2 border-black transition-colors cursor-pointer"
+              className="px-3 py-1 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white text-[11px] font-medium rounded-full border border-white/10 transition-colors cursor-pointer"
             >
               {tag}
             </button>
@@ -119,32 +119,32 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
       {/* Generated Ideas Cards */}
       {ideas.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-[10px] font-black text-[#FF4F00] uppercase tracking-[0.2em]">
-            GENERATED CONTENT IDEAS FOR &ldquo;{niche}&rdquo;
+          <h2 className="text-xs font-bold text-[#f59e0b] uppercase tracking-wider">
+            Generated Content Ideas for &ldquo;{niche}&rdquo;
           </h2>
 
           <div className="grid grid-cols-1 gap-4">
             {ideas.map((idea, idx) => (
               <div
                 key={idea.id || idx}
-                className="bg-white border-2 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group relative overflow-hidden"
+                className="glass-card border border-white/10 p-6 rounded-3xl transition-all group relative overflow-hidden"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                  <div className="space-y-2 flex-1">
+                  <div className="space-y-3 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 bg-black text-white text-xs font-black flex items-center justify-center border border-black">
+                      <span className="w-6 h-6 bg-white/10 text-zinc-200 text-xs font-bold flex items-center justify-center rounded-lg border border-white/10">
                         {idx + 1}
                       </span>
-                      <span className="px-2 py-0.5 bg-gray-100 border border-black text-black text-[10px] font-black uppercase tracking-widest">
+                      <span className="px-2.5 py-0.5 bg-amber-500/15 border border-amber-500/30 text-[#f59e0b] text-[10px] font-bold uppercase tracking-widest rounded-full">
                         {idea.suggestedMode} MODE
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-black text-black uppercase tracking-tight group-hover:text-[#FF4F00] transition-colors">
+                    <h3 className="text-xl font-serif-display font-bold text-zinc-100 group-hover:text-[#f59e0b] transition-colors">
                       {idea.headline}
                     </h3>
 
-                    <p className="text-xs text-gray-800 font-extrabold italic bg-gray-100 p-3 border-2 border-black">
+                    <p className="text-xs text-zinc-300 font-medium italic bg-white/[0.03] p-3 rounded-2xl border border-white/10 leading-relaxed">
                       &ldquo;{idea.hook}&rdquo;
                     </p>
 
@@ -154,7 +154,7 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
                         {idea.angles.map((angle, aIdx) => (
                           <span
                             key={aIdx}
-                            className="text-[10px] text-black bg-white px-2.5 py-1 font-bold border border-gray-300 uppercase tracking-wider"
+                            className="text-[10px] text-zinc-400 bg-white/5 px-2.5 py-1 font-medium rounded-full border border-white/10"
                           >
                             • {angle}
                           </span>
@@ -167,9 +167,9 @@ export const ContentCreatorPage: React.FC<ContentCreatorPageProps> = ({
                   <button
                     type="button"
                     onClick={() => handlePracticeIdea(idea)}
-                    className="self-start sm:self-center px-5 py-3 bg-[#FF4F00] hover:bg-[#E04500] text-white font-black text-xs uppercase tracking-wider border-2 border-black flex items-center gap-1.5 shrink-0 transition-all cursor-pointer shadow-sm"
+                    className="self-start sm:self-center px-5 py-2.5 btn-amber text-xs font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 shrink-0 transition-all cursor-pointer shadow-sm"
                   >
-                    <span>PRACTICE TOPIC</span>
+                    <span>Practice Topic</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>

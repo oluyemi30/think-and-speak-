@@ -26,7 +26,7 @@ export const PracticeModeSelector: React.FC<PracticeModeSelectorProps> = ({
   return (
     <div className="space-y-3">
       <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
-        <Target className="w-3.5 h-3.5 text-[#d97757]" />
+        <Target className="w-3.5 h-3.5 text-[#f59e0b]" />
         Practice Format
       </label>
 
@@ -40,7 +40,7 @@ export const PracticeModeSelector: React.FC<PracticeModeSelectorProps> = ({
               onClick={() => setPracticeMode(m.id)}
               className={`p-3 rounded-2xl text-left transition-all cursor-pointer ${
                 isSelected
-                  ? 'bg-white/[0.08] border border-[#d97757] text-white shadow-md'
+                  ? 'bg-white/[0.08] border border-[#f59e0b] text-white shadow-md'
                   : 'bg-white/[0.03] border border-white/10 text-zinc-300 hover:bg-white/[0.06] hover:border-white/20'
               }`}
             >

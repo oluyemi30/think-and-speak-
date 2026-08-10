@@ -35,10 +35,10 @@ export const ProgressPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tighter leading-tight">
-            YOUR PRACTICE DASHBOARD
+          <h1 className="text-3xl sm:text-5xl font-serif-display font-bold text-zinc-100 leading-tight">
+            Your Practice Dashboard
           </h1>
-          <p className="text-xs sm:text-sm text-gray-700 font-bold uppercase tracking-wider mt-1">
+          <p className="text-xs sm:text-sm text-zinc-400 font-medium mt-1">
             Consistency over perfection. Track your growing confidence and speaking volume.
           </p>
         </div>
@@ -46,9 +46,9 @@ export const ProgressPage: React.FC = () => {
         {sessions.length > 0 && (
           <button
             onClick={handleClear}
-            className="text-xs font-black text-black hover:text-[#FF4F00] flex items-center gap-1.5 px-3 py-1.5 border-2 border-black bg-white hover:bg-gray-100 uppercase tracking-wider cursor-pointer"
+            className="text-xs font-semibold text-zinc-400 hover:text-red-400 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
           >
-            <Trash2 className="w-3.5 h-3.5 text-[#FF4F00]" /> Clear History
+            <Trash2 className="w-3.5 h-3.5" /> Clear History
           </button>
         )}
       </div>
@@ -56,60 +56,60 @@ export const ProgressPage: React.FC = () => {
       {/* Top Metrics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {/* Sessions Completed */}
-        <div className="bg-white border-2 border-black p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center justify-between text-black mb-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FF4F00]">SESSIONS</span>
-            <Trophy className="w-4 h-4 text-black" />
+        <div className="glass-card border border-white/10 p-5 rounded-3xl text-left">
+          <div className="flex items-center justify-between text-zinc-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#f59e0b]">SESSIONS</span>
+            <Trophy className="w-4 h-4 text-zinc-400" />
           </div>
-          <div className="text-4xl font-black text-black leading-none">{stats.sessionsCompleted}</div>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1 block">TOPICS PRACTICED</span>
+          <div className="text-4xl font-mono font-bold text-zinc-100 leading-none">{stats.sessionsCompleted}</div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mt-2 block">TOPICS PRACTICED</span>
         </div>
 
         {/* Total Speaking Time */}
-        <div className="bg-white border-2 border-black p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center justify-between text-black mb-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FF4F00]">SPEAKING TIME</span>
-            <Clock className="w-4 h-4 text-black" />
+        <div className="glass-card border border-white/10 p-5 rounded-3xl text-left">
+          <div className="flex items-center justify-between text-zinc-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#f59e0b]">SPEAKING TIME</span>
+            <Clock className="w-4 h-4 text-zinc-400" />
           </div>
-          <div className="text-4xl font-black text-black leading-none">{formatTime(stats.totalSpeakSeconds)}</div>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1 block">VOCAL PRACTICE</span>
+          <div className="text-4xl font-mono font-bold text-zinc-100 leading-none">{formatTime(stats.totalSpeakSeconds)}</div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mt-2 block">VOCAL PRACTICE</span>
         </div>
 
         {/* Current Streak */}
-        <div className="bg-white border-2 border-black p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center justify-between text-black mb-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FF4F00]">STREAK</span>
-            <Flame className="w-4 h-4 text-[#FF4F00] fill-[#FF4F00]" />
+        <div className="glass-card border border-white/10 p-5 rounded-3xl text-left">
+          <div className="flex items-center justify-between text-zinc-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#f59e0b]">STREAK</span>
+            <Flame className="w-4 h-4 text-[#f59e0b] fill-[#f59e0b]" />
           </div>
-          <div className="text-4xl font-black text-black leading-none">{stats.streakDays} {stats.streakDays === 1 ? 'DAY' : 'DAYS'}</div>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1 block">CONSISTENCY</span>
+          <div className="text-4xl font-mono font-bold text-zinc-100 leading-none">{stats.streakDays} {stats.streakDays === 1 ? 'DAY' : 'DAYS'}</div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mt-2 block">CONSISTENCY</span>
         </div>
 
         {/* Average Confidence */}
-        <div className="bg-white border-2 border-black p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center justify-between text-black mb-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FF4F00]">AVG CONFIDENCE</span>
-            <Star className="w-4 h-4 text-black fill-black" />
+        <div className="glass-card border border-white/10 p-5 rounded-3xl text-left">
+          <div className="flex items-center justify-between text-zinc-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#f59e0b]">AVG CONFIDENCE</span>
+            <Star className="w-4 h-4 text-[#f59e0b] fill-[#f59e0b]" />
           </div>
-          <div className="text-4xl font-black text-black leading-none">
+          <div className="text-4xl font-mono font-bold text-zinc-100 leading-none">
             {stats.averageConfidence > 0 ? `${stats.averageConfidence}/5` : 'N/A'}
           </div>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1 block">SELF-RATED</span>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mt-2 block">SELF-RATED</span>
         </div>
       </div>
 
       {/* Strongest Areas / Category Breakdown */}
       {Object.keys(stats.categoryCounts).length > 0 && (
-        <div className="bg-white border-2 border-black p-6 space-y-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-[10px] font-black text-[#FF4F00] uppercase tracking-[0.2em] flex items-center gap-2">
-            <Compass className="w-4 h-4" /> YOUR PRACTICED CATEGORIES
+        <div className="glass-card border border-white/10 p-6 rounded-3xl space-y-4">
+          <h2 className="text-xs font-bold text-[#f59e0b] uppercase tracking-wider flex items-center gap-2">
+            <Compass className="w-4 h-4" /> Practiced Categories
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {Object.entries(stats.categoryCounts).map(([cat, count]) => (
-              <div key={cat} className="bg-gray-100 border-2 border-black p-3 flex items-center justify-between">
-                <span className="text-xs font-black text-black uppercase tracking-tight">{cat}</span>
-                <span className="px-2 py-0.5 bg-black text-white text-xs font-black">
+              <div key={cat} className="bg-white/[0.03] border border-white/10 rounded-2xl p-3 flex items-center justify-between">
+                <span className="text-xs font-semibold text-zinc-200">{cat}</span>
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-[#f59e0b] text-xs font-bold">
                   {count}
                 </span>
               </div>
@@ -120,35 +120,35 @@ export const ProgressPage: React.FC = () => {
 
       {/* Session History Log */}
       <div className="space-y-4">
-        <h2 className="text-[10px] font-black text-[#FF4F00] uppercase tracking-[0.2em]">
-          PRACTICE HISTORY LOG ({sessions.length})
+        <h2 className="text-xs font-bold text-[#f59e0b] uppercase tracking-wider">
+          Practice History Log ({sessions.length})
         </h2>
 
         {sessions.length === 0 ? (
-          <div className="bg-white border-2 border-black p-8 text-center text-black text-xs font-bold uppercase tracking-wider space-y-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p>NO PRACTICE SESSIONS RECORDED YET.</p>
-            <p className="text-[#FF4F00]">HEAD TO THE PRACTICE TAB AND SPIN YOUR FIRST TOPIC!</p>
+          <div className="glass-card border border-white/10 p-8 rounded-3xl text-center text-zinc-400 text-xs font-medium space-y-2">
+            <p>No practice sessions recorded yet.</p>
+            <p className="text-[#f59e0b] font-semibold">Head to the Practice tab and spin your first topic!</p>
           </div>
         ) : (
           <div className="space-y-4">
             {sessions.map((sess) => (
               <div
                 key={sess.id}
-                className="bg-white border-2 border-black p-6 space-y-3 relative shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                className="glass-card border border-white/10 p-6 rounded-3xl space-y-3 relative"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-1 bg-[#FF4F00] text-white text-[10px] font-black uppercase tracking-widest">
+                    <span className="px-2.5 py-1 bg-amber-500/15 border border-amber-500/30 text-[#f59e0b] text-[10px] font-bold uppercase tracking-wider rounded-full">
                       {sess.topicPrompt.category}
                     </span>
-                    <span className="px-2.5 py-1 border-2 border-black bg-gray-100 text-black text-[10px] font-black uppercase tracking-widest">
+                    <span className="px-2.5 py-1 border border-white/10 bg-white/5 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded-full">
                       {sess.topicPrompt.difficulty}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs font-black uppercase tracking-wider text-black">
+                  <div className="flex items-center gap-3 text-xs font-medium text-zinc-400">
                     <span className="flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 text-[#FF4F00] fill-[#FF4F00]" />
+                      <Star className="w-3.5 h-3.5 text-[#f59e0b] fill-[#f59e0b]" />
                       {sess.confidenceRating}/5
                     </span>
                     <span className="opacity-40">•</span>
@@ -157,14 +157,14 @@ export const ProgressPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-black text-black italic uppercase">&ldquo;{sess.topicPrompt.topic}&rdquo;</h3>
-                  <p className="text-xs text-gray-700 font-bold mt-0.5">{sess.topicPrompt.challenge}</p>
+                  <h3 className="text-xl font-serif-display font-bold text-zinc-100">&ldquo;{sess.topicPrompt.topic}&rdquo;</h3>
+                  <p className="text-xs text-zinc-400 font-normal mt-0.5">{sess.topicPrompt.challenge}</p>
                 </div>
 
                 {/* Audio player if recorded */}
                 {sess.audioRecordingUrl && (
-                  <div className="bg-gray-100 border-2 border-black p-3 flex items-center gap-2">
-                    <Volume2 className="w-4 h-4 text-[#FF4F00] shrink-0" />
+                  <div className="bg-white/[0.03] border border-white/10 p-3 rounded-2xl flex items-center gap-2">
+                    <Volume2 className="w-4 h-4 text-[#f59e0b] shrink-0" />
                     <audio controls src={sess.audioRecordingUrl} className="w-full h-7 text-xs" />
                   </div>
                 )}
@@ -173,7 +173,7 @@ export const ProgressPage: React.FC = () => {
                 {sess.skillsPracticed && sess.skillsPracticed.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {sess.skillsPracticed.map((skill, sIdx) => (
-                      <span key={sIdx} className="text-[10px] bg-black text-white px-2 py-0.5 font-black uppercase tracking-widest">
+                      <span key={sIdx} className="text-[10px] bg-white/5 border border-white/10 text-zinc-300 px-2.5 py-0.5 font-medium rounded-full">
                         ✓ {skill}
                       </span>
                     ))}
@@ -181,7 +181,7 @@ export const ProgressPage: React.FC = () => {
                 )}
 
                 {sess.userNotes && (
-                  <p className="text-xs text-gray-800 font-extrabold italic bg-gray-100 p-2.5 border-2 border-black">
+                  <p className="text-xs text-zinc-300 font-medium italic bg-white/[0.03] p-3 rounded-2xl border border-white/10">
                     &ldquo;{sess.userNotes}&rdquo;
                   </p>
                 )}

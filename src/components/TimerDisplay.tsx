@@ -112,7 +112,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
           </span>
         )}
         {phase === 'SPEAKING' && (
-          <span className="bg-[#d97757] text-[#0c0f12] text-xs font-bold tracking-wider px-4 py-1.5 rounded-full shadow-lg animate-pulse">
+          <span className="bg-[#f59e0b] text-[#080c14] text-xs font-bold tracking-wider px-4 py-1.5 rounded-full shadow-lg animate-pulse">
             🎙️ Speaking Phase — Speak Out Loud
           </span>
         )}
@@ -137,7 +137,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
       <div className="w-full bg-white/5 border border-white/10 h-2.5 rounded-full max-w-md mx-auto my-6 overflow-hidden">
         <div
           className={`h-full transition-all duration-300 rounded-full ${
-            phase === 'THINKING' ? 'bg-zinc-300' : 'bg-[#d97757]'
+            phase === 'THINKING' ? 'bg-zinc-300' : 'bg-[#f59e0b]'
           }`}
           style={{ width: `${progressPercent}%` }}
         />
@@ -160,7 +160,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
           onClick={() => setIsPaused(!isPaused)}
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-200 text-xs font-semibold transition-all cursor-pointer"
         >
-          {isPaused ? <Play className="w-3.5 h-3.5 text-[#d97757]" /> : <Pause className="w-3.5 h-3.5 text-zinc-300" />}
+          {isPaused ? <Play className="w-3.5 h-3.5 text-[#f59e0b]" /> : <Pause className="w-3.5 h-3.5 text-zinc-300" />}
           <span>{isPaused ? 'Resume' : 'Pause'}</span>
         </button>
 
@@ -176,7 +176,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
         {/* Skip Phase */}
         <button
           onClick={handleSkip}
-          className="flex items-center gap-2 px-5 py-2 rounded-full btn-terracotta text-xs font-bold transition-all cursor-pointer"
+          className="flex items-center gap-2 px-5 py-2 rounded-full btn-amber text-xs font-bold transition-all cursor-pointer"
         >
           <FastForward className="w-3.5 h-3.5" />
           <span>{phase === 'THINKING' ? 'Start Speaking →' : 'Finish Session'}</span>
