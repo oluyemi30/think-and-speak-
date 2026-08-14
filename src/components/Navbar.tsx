@@ -17,12 +17,19 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, streakD
           onClick={() => setActiveTab('practice')}
           className="flex flex-col text-left cursor-pointer group shrink-0"
         >
-          <span className="font-serif-display text-xl sm:text-2xl md:text-3xl text-zinc-100 tracking-tight leading-none group-hover:text-[#f59e0b] transition-colors">
-            Off The Cuff
-          </span>
-          <span className="text-[9px] sm:text-[10px] text-amber-500/80 font-medium tracking-wide hidden xs:block">
-            spontaneous speaking gym
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-serif-display text-xl sm:text-2xl md:text-3xl text-zinc-100 tracking-tight leading-none group-hover:text-[#f59e0b] transition-colors">
+              Off The Cuff
+            </span>
+            <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-[#f59e0b]">
+              by BigYemy
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-amber-500/80 font-medium tracking-wide">
+            <span>spontaneous speaking gym</span>
+            <span className="md:hidden text-zinc-500">•</span>
+            <span className="md:hidden text-[#f59e0b] font-semibold">by BigYemy</span>
+          </div>
         </button>
 
         {/* Navigation Tabs Pills - Horizontal Scroll on small screens */}

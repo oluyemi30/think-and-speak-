@@ -35,10 +35,10 @@
 - **Session History Log**: Replay saved audio recordings, view practiced skills, and review self-ratings.
 
 ### 5. 🌐 Creator Social Integration
-Directly connected with founder & creator **Oluyemi Sopade**:
+Directly connected with founder & creator **BigYemy (Oluyemi Sopade)**:
 - **TikTok**: [@oluyemisopade](https://www.tiktok.com/@oluyemisopade)
 - **Instagram**: [@oluyemisopade](https://www.instagram.com/oluyemisopade)
-- **Facebook**: [Oluyemi Sopade](https://www.facebook.com/share/181PpQgzds/?mibextid=wwXIfr)
+- **Facebook**: [BigYemy (Oluyemi Sopade)](https://www.facebook.com/share/181PpQgzds/?mibextid=wwXIfr)
 
 ---
 

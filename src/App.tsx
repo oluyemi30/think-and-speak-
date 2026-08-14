@@ -59,6 +59,9 @@ export default function App() {
           <p className="text-[11px] text-zinc-400">
             Think quick on your feet. Master spontaneous speaking.
           </p>
+          <p className="text-[11px] text-amber-500/90 font-semibold pt-0.5">
+            Designed &amp; Created by BigYemy
+          </p>
         </div>
 
         <SocialLinks variant="footer" />
