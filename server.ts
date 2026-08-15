@@ -11,7 +11,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Helper to safely clean and parse JSON responses from Gemini
+// Helper to safely clean and parse JSON responses from AI models
 function safeParseJSON<T>(rawText: string): T {
   let cleaned = rawText.trim();
   if (cleaned.startsWith('```json')) {
@@ -19,7 +19,17 @@ function safeParseJSON<T>(rawText: string): T {
   } else if (cleaned.startsWith('```')) {
     cleaned = cleaned.replace(/^```\s*/, '').replace(/\s*```$/, '');
   }
-  return JSON.parse(cleaned.trim()) as T;
+
+  try {
+    return JSON.parse(cleaned.trim()) as T;
+  } catch {
+    // Attempt regex match for first valid JSON object or array
+    const jsonMatch = cleaned.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]) as T;
+    }
+    throw new Error(`Failed to extract JSON from model output: ${cleaned.substring(0, 120)}`);
+  }
 }
 
 async function startServer() {
@@ -27,6 +37,11 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Helper for OpenRouter API Key retrieval
+  const getOpenRouterKey = () => {
+    return process.env.OPENROUTER_API_KEY || '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';
+  };
 
   // Initialize Gemini client lazily/safely
   const getGeminiAI = () => {
@@ -42,21 +57,80 @@ async function startServer() {
     });
   };
 
+  // Helper for OpenRouter API integration with multi-model fallback
+  const callOpenRouter = async (promptText: string) => {
+    const apiKey = getOpenRouterKey();
+    if (!apiKey) return null;
+
+    const candidateModels = [
+      'google/gemini-2.0-flash-001',
+      'google/gemini-2.5-flash',
+      'openai/gpt-4o-mini',
+      'meta-llama/llama-3.3-70b-instruct',
+    ];
+
+    for (const model of candidateModels) {
+      try {
+        console.log(`Calling OpenRouter with model: ${model}`);
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': process.env.APP_URL || 'https://off-the-cuff.app',
+            'X-Title': 'Off The Cuff Spontaneous Speaking Gym',
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              {
+                role: 'system',
+                content: 'You are an expert public speaking coach, debate judge, and spontaneous thinking trainer. Return strict, valid raw JSON only with no markdown wrapping or conversational commentary.',
+              },
+              {
+                role: 'user',
+                content: promptText,
+              },
+            ],
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const content = data.choices?.[0]?.message?.content;
+          if (content) {
+            console.log(`OpenRouter model ${model} succeeded!`);
+            return content;
+          }
+        } else {
+          const errText = await response.text();
+          console.warn(`OpenRouter model ${model} failed (status ${response.status}):`, errText);
+        }
+      } catch (err) {
+        console.warn(`OpenRouter fetch error with model ${model}:`, err);
+      }
+    }
+
+    return null;
+  };
+
+  // API Route: AI Provider Status
+  app.get('/api/ai-provider', (_req, res) => {
+    const hasGemini = Boolean(process.env.GEMINI_API_KEY);
+    const hasOpenRouter = Boolean(getOpenRouterKey());
+    res.json({
+      hasGemini,
+      hasOpenRouter,
+      activeProvider: hasGemini ? 'Gemini AI' : hasOpenRouter ? 'OpenRouter AI (Active)' : 'Smart Offline Generator',
+    });
+  });
+
   // API Route: Generate Topic
   app.post('/api/generate-topic', async (req, res) => {
     const { category, customNiche, difficulty, practiceMode, previousTopics } = req.body;
+    const activeCategory = category === 'Custom' && customNiche ? customNiche : category;
 
-    const ai = getGeminiAI();
-
-    if (!ai) {
-      console.log('No GEMINI_API_KEY found, using intelligent fallback topic');
-      const fallback = getRandomFallbackTopic(category, customNiche, difficulty, practiceMode);
-      return res.json(fallback);
-    }
-
-    try {
-      const activeCategory = category === 'Custom' && customNiche ? customNiche : category;
-      const promptText = `
+    const promptText = `
 You are an expert public speaking coach, content creation mentor, and spontaneous thinking trainer for the THINK & SPEAK platform.
 
 Generate a unique, engaging practice prompt for a user training their speaking and thinking skills.
@@ -75,137 +149,153 @@ Rules:
    - Advanced: 10m think time. Deep debate or multi-faceted problem with several angles.
 3. The prompt must feel empowering, thought-provoking, and practical.
 4. Avoid generic "Define X" or "Explain X". Make it feel like a real speech, debate, or video recording challenge.
+
+Return JSON with structure:
+{
+  "type": "word|question|scenario|debate|problem",
+  "topic": "Short headline or topic name",
+  "challenge": "Clear actionable challenge statement for the speaker",
+  "context": "Optional situational context",
+  "angles": ["Point 1", "Point 2", "Point 3"],
+  "difficulty": "${difficulty}"
+}
 `;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
-        contents: promptText,
-        config: {
-          thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              type: {
-                type: Type.STRING,
-                description: 'One of: word, question, scenario, debate, problem',
+    let rawResponseText: string | null = null;
+
+    // 1. Try Gemini first if available
+    const ai = getGeminiAI();
+    if (ai) {
+      try {
+        const response = await ai.models.generateContent({
+          model: 'gemini-3.6-flash',
+          contents: promptText,
+          config: {
+            thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+            responseMimeType: 'application/json',
+            responseSchema: {
+              type: Type.OBJECT,
+              properties: {
+                type: { type: Type.STRING },
+                topic: { type: Type.STRING },
+                challenge: { type: Type.STRING },
+                context: { type: Type.STRING },
+                angles: { type: Type.ARRAY, items: { type: Type.STRING } },
+                difficulty: { type: Type.STRING },
               },
-              topic: {
-                type: Type.STRING,
-                description: 'Short headline or topic name',
-              },
-              challenge: {
-                type: Type.STRING,
-                description: 'Clear, actionable challenge statement for the speaker',
-              },
-              context: {
-                type: Type.STRING,
-                description: 'Optional situational context or scenario setting',
-              },
-              angles: {
-                type: Type.ARRAY,
-                items: { type: Type.STRING },
-                description: 'Key angles or points to consider (especially for intermediate/advanced)',
-              },
-              difficulty: {
-                type: Type.STRING,
-                description: 'basic, intermediate, or advanced',
-              },
+              required: ['type', 'topic', 'challenge', 'difficulty'],
             },
-            required: ['type', 'topic', 'challenge', 'difficulty'],
           },
-        },
-      });
-
-      if (response.text) {
-        try {
-          const parsed = safeParseJSON<any>(response.text);
-          const thinkTimeSeconds = difficulty === 'basic' ? 15 : difficulty === 'intermediate' ? 120 : 600;
-          const speakTimeSeconds = difficulty === 'basic' ? 60 : difficulty === 'intermediate' ? 180 : 300;
-
-          return res.json({
-            id: `gen-${Date.now()}`,
-            type: parsed.type || 'question',
-            topic: parsed.topic || `${activeCategory} Practice Topic`,
-            challenge: parsed.challenge || `Speak spontaneously about ${activeCategory}.`,
-            context: parsed.context || '',
-            angles: parsed.angles || [],
-            difficulty: parsed.difficulty || difficulty,
-            category: activeCategory,
-            practiceMode: practiceMode || 'speak',
-            thinkTimeSeconds,
-            speakTimeSeconds,
-          });
-        } catch (parseErr) {
-          console.warn('Failed to parse topic response from Gemini, using fallback:', parseErr);
-          const fallback = getRandomFallbackTopic(category, customNiche, difficulty, practiceMode);
-          return res.json(fallback);
-        }
+        });
+        rawResponseText = response.text || null;
+      } catch (geminiErr) {
+        console.warn('Gemini API call failed, trying OpenRouter fallback...', geminiErr);
       }
-
-      throw new Error('Empty response from Gemini');
-    } catch (err) {
-      console.error('Error in topic endpoint:', err);
-      const fallback = getRandomFallbackTopic(category, customNiche, difficulty, practiceMode);
-      return res.json(fallback);
     }
+
+    // 2. Try OpenRouter if Gemini wasn't available or failed
+    if (!rawResponseText) {
+      console.log('Generating topic via OpenRouter API...');
+      rawResponseText = await callOpenRouter(promptText);
+    }
+
+    // 3. Process raw response if available
+    if (rawResponseText) {
+      try {
+        const parsed = safeParseJSON<any>(rawResponseText);
+        const thinkTimeSeconds = difficulty === 'basic' ? 15 : difficulty === 'intermediate' ? 120 : 600;
+        const speakTimeSeconds = difficulty === 'basic' ? 60 : difficulty === 'intermediate' ? 180 : 300;
+
+        return res.json({
+          id: `gen-${Date.now()}`,
+          type: parsed.type || 'question',
+          topic: parsed.topic || `${activeCategory} Practice Topic`,
+          challenge: parsed.challenge || `Speak spontaneously about ${activeCategory}.`,
+          context: parsed.context || '',
+          angles: parsed.angles || [],
+          difficulty: parsed.difficulty || difficulty,
+          category: activeCategory,
+          practiceMode: practiceMode || 'speak',
+          thinkTimeSeconds,
+          speakTimeSeconds,
+        });
+      } catch (parseErr) {
+        console.warn('Failed to parse topic response, using fallback generator:', parseErr);
+      }
+    }
+
+    // 4. Offline Fallback
+    console.log('Using intelligent fallback topic generator');
+    const fallback = getRandomFallbackTopic(category, customNiche, difficulty, practiceMode);
+    return res.json(fallback);
   });
 
   // API Route: Generate Content Ideas for Creators
   app.post('/api/generate-content-ideas', async (req, res) => {
     const { niche } = req.body;
-    const ai = getGeminiAI();
-
-    if (!ai) {
-      console.log('No GEMINI_API_KEY found, returning fallback content ideas');
-      const fallback = getFallbackContentIdeas(niche);
-      return res.json(fallback);
-    }
-
-    try {
-      const promptText = `
+    const promptText = `
 You are a top social media content strategist for creators, developers, entrepreneurs, and thinkers.
 
 Generate 5 high-converting, highly engaging content ideas for someone in the niche: "${niche || 'General Productivity'}".
 
 Each content idea must break the "curse of knowledge" by turning existing industry knowledge into an engaging spoken video concept, hot take, breakdown, or storytelling script.
 
-Return JSON array of 5 objects with:
+Return a JSON object containing an array "ideas" or direct JSON array of 5 objects with:
 - headline: Catchy title
 - hook: The opening line that grabs attention
 - angles: Array of 3-4 key bullet points to cover
 - suggestedMode: One of (speak, explain, debate, hottake, story, solve, content, teach, devils_advocate)
 `;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
-        contents: promptText,
-        config: {
-          thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                headline: { type: Type.STRING },
-                hook: { type: Type.STRING },
-                angles: {
-                  type: Type.ARRAY,
-                  items: { type: Type.STRING },
+    let rawResponseText: string | null = null;
+
+    // 1. Try Gemini
+    const ai = getGeminiAI();
+    if (ai) {
+      try {
+        const response = await ai.models.generateContent({
+          model: 'gemini-3.6-flash',
+          contents: promptText,
+          config: {
+            thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+            responseMimeType: 'application/json',
+            responseSchema: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  headline: { type: Type.STRING },
+                  hook: { type: Type.STRING },
+                  angles: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  suggestedMode: { type: Type.STRING },
                 },
-                suggestedMode: { type: Type.STRING },
+                required: ['headline', 'hook', 'angles', 'suggestedMode'],
               },
-              required: ['headline', 'hook', 'angles', 'suggestedMode'],
             },
           },
-        },
-      });
+        });
+        rawResponseText = response.text || null;
+      } catch (geminiErr) {
+        console.warn('Gemini API failed for content ideas, trying OpenRouter fallback...', geminiErr);
+      }
+    }
 
-      if (response.text) {
-        try {
-          const parsed = safeParseJSON<any[]>(response.text);
-          const formatted = parsed.map((item: any, idx: number) => ({
+    // 2. Try OpenRouter
+    if (!rawResponseText) {
+      console.log('Generating content ideas via OpenRouter API...');
+      rawResponseText = await callOpenRouter(promptText);
+    }
+
+    // 3. Parse response
+    if (rawResponseText) {
+      try {
+        const parsed = safeParseJSON<any>(rawResponseText);
+        const list = Array.isArray(parsed) ? parsed : parsed.ideas || parsed.contentIdeas || [];
+        if (list.length > 0) {
+          const formatted = list.map((item: any, idx: number) => ({
             id: `idea-${Date.now()}-${idx}`,
             headline: item.headline,
             hook: item.hook,
@@ -213,19 +303,15 @@ Return JSON array of 5 objects with:
             suggestedMode: item.suggestedMode || 'content',
           }));
           return res.json(formatted);
-        } catch (parseErr) {
-          console.warn('Failed to parse content ideas response from Gemini, using fallback:', parseErr);
-          const fallback = getFallbackContentIdeas(niche);
-          return res.json(fallback);
         }
+      } catch (parseErr) {
+        console.warn('Failed to parse content ideas AI response, using fallback:', parseErr);
       }
-
-      throw new Error('Empty response from Gemini');
-    } catch (err) {
-      console.error('Error generating content ideas:', err);
-      const fallback = getFallbackContentIdeas(niche);
-      return res.json(fallback);
     }
+
+    // 4. Fallback
+    const fallback = getFallbackContentIdeas(niche);
+    return res.json(fallback);
   });
 
   // Helper Fallback Selectors
@@ -239,13 +325,25 @@ Return JSON array of 5 objects with:
     const speakTimeSeconds = difficulty === 'basic' ? 60 : difficulty === 'intermediate' ? 180 : 300;
     const activeCategory = category === 'Custom' && customNiche ? customNiche : category;
 
-    // Filter fallback list if matching difficulty
-    const matched = FALLBACK_TOPICS.filter((t) => t.difficulty === difficulty);
-    const selected = matched.length > 0 ? matched[Math.floor(Math.random() * matched.length)] : FALLBACK_TOPICS[0];
+    // Filter by matching category first
+    let pool = FALLBACK_TOPICS.filter(
+      (t) => t.category.toLowerCase() === activeCategory.toLowerCase() && t.difficulty === difficulty
+    );
+    if (pool.length === 0) {
+      pool = FALLBACK_TOPICS.filter((t) => t.category.toLowerCase() === activeCategory.toLowerCase());
+    }
+    if (pool.length === 0) {
+      pool = FALLBACK_TOPICS.filter((t) => t.difficulty === difficulty);
+    }
+    if (pool.length === 0) {
+      pool = FALLBACK_TOPICS;
+    }
+
+    const selected = pool[Math.floor(Math.random() * pool.length)];
 
     return {
       ...selected,
-      id: `fallback-${Date.now()}`,
+      id: `fallback-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
       category: activeCategory,
       practiceMode: practiceMode || selected.practiceMode,
       thinkTimeSeconds,

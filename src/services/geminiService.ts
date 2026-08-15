@@ -1,4 +1,5 @@
 import { TopicPrompt, Category, Difficulty, PracticeMode, ContentIdea } from '../types';
+import { FALLBACK_TOPICS, FALLBACK_CONTENT_IDEAS } from '../data/fallbackTopics';
 
 export const geminiService = {
   async generateTopic(params: {
@@ -23,20 +24,32 @@ export const geminiService = {
 
       return await response.json();
     } catch (error) {
-      console.error('Failed to generate topic via API, using fallback:', error);
-      // Client-side quick fallback if server fetch completely fails
+      console.error('Failed to generate topic via API, using rich local fallback:', error);
       const thinkTimeSeconds = params.difficulty === 'basic' ? 15 : params.difficulty === 'intermediate' ? 120 : 600;
       const speakTimeSeconds = params.difficulty === 'basic' ? 60 : params.difficulty === 'intermediate' ? 180 : 300;
       const activeCat = params.category === 'Custom' && params.customNiche ? params.customNiche : params.category;
 
+      // Find matching fallback topic from pool
+      let pool = FALLBACK_TOPICS.filter(
+        (t) => t.category.toLowerCase() === activeCat.toLowerCase() && t.difficulty === params.difficulty
+      );
+      if (pool.length === 0) {
+        pool = FALLBACK_TOPICS.filter((t) => t.category.toLowerCase() === activeCat.toLowerCase());
+      }
+      if (pool.length === 0) {
+        pool = FALLBACK_TOPICS.filter((t) => t.difficulty === params.difficulty);
+      }
+      if (pool.length === 0) {
+        pool = FALLBACK_TOPICS;
+      }
+
+      const selected = pool[Math.floor(Math.random() * pool.length)];
+
       return {
-        id: `fallback-client-${Date.now()}`,
-        type: 'question',
-        topic: `${activeCat} Perspective`,
-        challenge: `Share your top insight or a personal story about ${activeCat}. What is something most people overlook?`,
-        difficulty: params.difficulty,
+        ...selected,
+        id: `fallback-client-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
         category: activeCat,
-        practiceMode: params.practiceMode,
+        practiceMode: params.practiceMode || selected.practiceMode,
         thinkTimeSeconds,
         speakTimeSeconds,
       };
@@ -60,22 +73,12 @@ export const geminiService = {
       return await response.json();
     } catch (error) {
       console.error('Failed to generate content ideas:', error);
-      return [
-        {
-          id: `idea-${Date.now()}-1`,
-          headline: `The biggest misconception about ${niche || 'your industry'}`,
-          hook: `Everyone gets this wrong when they first start learning about ${niche || 'this field'}.`,
-          angles: ['Common belief', 'Why it fails', 'Practical advice'],
-          suggestedMode: 'hottake',
-        },
-        {
-          id: `idea-${Date.now()}-2`,
-          headline: `How I explain ${niche || 'my field'} to non-technical people`,
-          hook: `If you want people to respect your knowledge, stop using confusing buzzwords.`,
-          angles: ['Simple analogy', 'Core benefit', 'Real-world example'],
-          suggestedMode: 'explain',
-        },
-      ];
+      const key = (niche || '').toLowerCase().trim();
+      if (FALLBACK_CONTENT_IDEAS[key]) {
+        return FALLBACK_CONTENT_IDEAS[key];
+      }
+      return FALLBACK_CONTENT_IDEAS.default;
     }
   },
 };
+
