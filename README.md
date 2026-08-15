@@ -1,5 +1,9 @@
 # Off The Cuff — Spontaneous Speaking Gym 🎙️⚡
 
+<a href="https://orynth.dev/projects/off-the-cuffs" target="_blank" rel="noopener">
+  <img src="https://orynth.dev/api/badge/off-the-cuffs?theme=light&style=default" alt="Featured on Orynth" width="260" height="80" />
+</a>
+
 **Off The Cuff** is an interactive web application and mental gym designed to help speakers, creators, founders, and professionals overcome hesitation, think fast on their feet, and articulate their thoughts clearly on demand.
 
 ---

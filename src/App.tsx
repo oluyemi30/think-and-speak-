@@ -65,6 +65,24 @@ export default function App() {
         </div>
 
         <SocialLinks variant="footer" />
+
+        {/* Featured on Orynth Badge */}
+        <div className="flex justify-center pt-2">
+          <a
+            href="https://orynth.dev/projects/off-the-cuffs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <img
+              src="https://orynth.dev/api/badge/off-the-cuffs?theme=light&style=default"
+              alt="Featured on Orynth"
+              width="260"
+              height="80"
+              className="rounded-lg shadow-md max-w-full h-auto"
+            />
+          </a>
+        </div>
       </footer>
     </div>
   );
